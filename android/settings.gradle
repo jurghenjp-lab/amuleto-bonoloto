@@ -1,0 +1,12 @@
+rootProject.name = 'AmuletoBonoLoto'
+// apply from: file("../node_modules/@react-native/gradle-plugin/settings.gradle.kts")
+includeBuild('../node_modules/@react-native/gradle-plugin')
+
+include ':app'
+
+if (settings.hasProperty("newArchEnabled") && settings.newArchEnabled == "true") {
+    include(":ReactAndroid")
+    project(":ReactAndroid").projectDir = file('../node_modules/react-native/ReactAndroid')
+    include(":ReactAndroid:hermes-engine")
+    project(":ReactAndroid:hermes-engine").projectDir = file('../node_modules/react-native/ReactAndroid/hermes-engine')
+}
