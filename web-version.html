@@ -215,13 +215,21 @@
             color: #ffffff;
             font-size: 12px;
         }
-        .eliminar-btn {
-            background: #ff4444;
-            color: white;
+        .motor-btn {
+            background: #D4AF37;
+            color: #0B0E14;
             border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 15px 20px;
+            border-radius: 10px;
             cursor: pointer;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        
+        .motor-btn:hover {
+            background: #B8941F;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -252,6 +260,19 @@
                 <div class="columna" onclick="seleccionarColumna(4)">4</div>
                 <div class="columna" onclick="seleccionarColumna(5)">5</div>
                 <div class="columna" onclick="seleccionarColumna(6)">6</div>
+            </div>
+            
+            <h3>Selecciona el motor</h3>
+            <div class="motores">
+                <button class="motor-btn" onclick="generarApuestas('historico')">📊 Motor Histórico</button>
+                <button class="motor-btn" onclick="generarApuestas('buffon')">📏 Motor Buffon</button>
+                <button class="motor-btn" onclick="generarApuestas('amuleto')">⭐ Motor Amuleto</button>
+            </div>
+        </div>
+        
+        <div id="selector2" class="selector" style="display: none;">
+            <h3>Selecciona número de columnas</h3>
+            <div class="columnas">
                 <div class="columna" onclick="seleccionarColumna(7)">7</div>
                 <div class="columna" onclick="seleccionarColumna(8)">8</div>
             </div>
