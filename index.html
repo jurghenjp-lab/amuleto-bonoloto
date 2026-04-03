@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎱 Amuleto Bonoloto - Generador de Apuestas</title>
+    <meta name="description" content="Genera apuestas para la Bonoloto con tres motores algorítmicos: histórico, Buffon y personalizado">
+    <meta name="keywords" content="bonoloto, lotería, apuestas, predicciones, estadística">
+    <meta name="author" content="Amuleto Bonoloto">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jurghenjp-lab.github.io/amuleto-bonoloto/">
+    <meta property="og:title" content="🎱 Amuleto Bonoloto - Generador de Apuestas">
+    <meta property="og:description" content="Genera apuestas para la Bonoloto con tres motores algorítmicos">
+    <meta property="og:image" content="https://jurghenjp-lab.github.io/amuleto-bonoloto/orbe-icon.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://jurghenjp-lab.github.io/amuleto-bonoloto/">
+    <meta property="twitter:title" content="🎱 Amuleto Bonoloto - Generador de Apuestas">
+    <meta property="twitter:description" content="Genera apuestas para la Bonoloto con tres motores algorítmicos">
+    <meta property="twitter:image" content="https://jurghenjp-lab.github.io/amuleto-bonoloto/orbe-icon.png">
+    
+    <!-- PWA -->
+    <meta name="theme-color" content="#0B0E14">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="orbe-icon.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="orbe-icon.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0B0E14 0%, #1a1f2e 100%);
+            color: #D4AF37;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 1.5rem;
+        }
+        
+        .orbe-loading {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #D4AF37;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <div class="orbe-loading"></div>
+        Cargando Amuleto Bonoloto...
+    </div>
+    
+    <script>
+        // Redirigir a la app principal
+        setTimeout(() => {
+            window.location.href = 'web-version.html';
+        }, 1000);
+    </script>
+</body>
+</html>

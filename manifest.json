@@ -1,0 +1,25 @@
+{
+  "name": "🎱 Amuleto Bonoloto",
+  "short_name": "Amuleto",
+  "description": "Genera apuestas para la Bonoloto con tres motores algorítmicos",
+  "start_url": "./web-version.html",
+  "display": "standalone",
+  "background_color": "#0B0E14",
+  "theme_color": "#D4AF37",
+  "orientation": "portrait",
+  "scope": "./",
+  "lang": "es",
+  "categories": ["entertainment", "games", "utilities"],
+  "icons": [
+    {
+      "src": "orbe-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "orbe-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
