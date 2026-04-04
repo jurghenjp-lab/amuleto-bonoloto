@@ -249,11 +249,90 @@
             margin: 0 20px;
             box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
             animation: float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .dado.lanzando {
+            animation: rodar 1.5s ease-in-out;
+            transform: rotate(720deg) scale(1.2);
+        }
+        
+        .dado.resultado {
+            animation: aterrizar 0.5s ease-out;
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.8);
         }
         
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        @keyframes rodar {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(180deg) scale(1.3); }
+            50% { transform: rotate(360deg) scale(1.5); }
+            75% { transform: rotate(540deg) scale(1.3); }
+            100% { transform: rotate(720deg) scale(1.2); }
+        }
+        
+        @keyframes aterrizar {
+            0% { transform: scale(1.5) rotate(720deg); }
+            50% { transform: scale(0.8) rotate(360deg); }
+            100% { transform: scale(1.1) rotate(0deg); }
+        }
+        
+        .dados-container {
+            text-align: center;
+            margin: 30px 0;
+            min-height: 100px;
+            position: relative;
+        }
+        
+        .dados-resultado {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .dado-resultado {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #D4AF37, #8B6914);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.6);
+            animation: brillar 2s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .dado-resultado::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #D4AF37, #fff, #D4AF37);
+            border-radius: 20px;
+            z-index: -1;
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes brillar {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
         
         .agujas-container {
@@ -286,15 +365,457 @@
             background: rgba(212, 175, 55, 0.1);
             border-radius: 10px;
         }
+        
+        .predicciones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .prediccion-item {
+            background: #2a2f3e;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #D4AF37;
+            text-align: center;
+        }
+        
+        .prediccion-numeros {
+            color: #D4AF37;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .prediccion-complementario {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .predicccion-motor {
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        /* Estilos para Orbe Principal con Efecto Místico */
+        .orbe-container {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .orbe-principal {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, #D4AF37, #8B6914, #4a3f1a);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.6);
+            animation: orbe-flotar 4s ease-in-out infinite;
+        }
+        
+        .orbe-principal::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.3), transparent 70%);
+            border-radius: 50%;
+            animation: orbe-glow 3s ease-in-out infinite;
+        }
+        
+        .orbe-principal::after {
+            content: '🔮';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            animation: orbe-simbolo 2s ease-in-out infinite;
+        }
+        
+        .orbe-principal:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 80px rgba(212, 175, 55, 0.8);
+        }
+        
+        .orbe-principal:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 100px rgba(212, 175, 55, 1);
+        }
+        
+        @keyframes orbe-flotar {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        
+        @keyframes orbe-glow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
+        
+        @keyframes orbe-simbolo {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+            50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); }
+        }
+        
+        .orbe-rayos {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 250px;
+            height: 250px;
+            transform: translate(-50%, -50%);
+            animation: rayos-rotar 10s linear infinite;
+            pointer-events: none;
+        }
+        
+        .rayo {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, #D4AF37, transparent);
+            top: 0;
+            left: 50%;
+            transform-origin: center bottom;
+            opacity: 0.6;
+        }
+        
+        .rayo:nth-child(1) { transform: translateX(-50%) rotate(0deg); }
+        .rayo:nth-child(2) { transform: translateX(-50%) rotate(45deg); }
+        .rayo:nth-child(3) { transform: translateX(-50%) rotate(90deg); }
+        .rayo:nth-child(4) { transform: translateX(-50%) rotate(135deg); }
+        .rayo:nth-child(5) { transform: translateX(-50%) rotate(180deg); }
+        .rayo:nth-child(6) { transform: translateX(-50%) rotate(225deg); }
+        .rayo:nth-child(7) { transform: translateX(-50%) rotate(270deg); }
+        .rayo:nth-child(8) { transform: translateX(-50%) rotate(315deg); }
+        
+        @keyframes rayos-rotar {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .orbe-instrucciones {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.3rem;
+            color: #D4AF37;
+            animation: texto-parpadeo 2s ease-in-out infinite;
+        }
+        
+        @keyframes texto-parpadeo {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        .orbe-energia {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #D4AF37;
+            border-radius: 50%;
+            animation: energia-flotar 3s ease-in-out infinite;
+        }
+        
+        .energia1 { top: 20%; left: 10%; animation-delay: 0s; }
+        .energia2 { top: 30%; right: 15%; animation-delay: 0.5s; }
+        .energia3 { bottom: 25%; left: 20%; animation-delay: 1s; }
+        .energia4 { bottom: 20%; right: 10%; animation-delay: 1.5s; }
+        
+        @keyframes energia-flotar {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+            50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
+        }
+        .altar-container {
+            background: linear-gradient(135deg, #1a1f2e, #2a1f3e, #1f2a3e);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px 0;
+            border: 3px solid #D4AF37;
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .altar-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: mystical-glow 8s ease-in-out infinite;
+        }
+        
+        @keyframes mystical-glow {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+        }
+        
+        .altar-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #D4AF37;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+            animation: title-pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes title-pulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        .altar-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .altar-group {
+            background: rgba(212, 175, 55, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .altar-group:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: #D4AF37;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+        
+        .altar-group::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: #D4AF37;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: orb-float 4s ease-in-out infinite;
+        }
+        
+        @keyframes orb-float {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        .altar-label {
+            display: block;
+            color: #D4AF37;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .altar-input, .altar-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(26, 31, 46, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            color: #D4AF37;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .altar-input:focus, .altar-select:focus {
+            outline: none;
+            border-color: #D4AF37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            background: rgba(26, 31, 46, 0.9);
+        }
+        
+        .altar-input::placeholder, .altar-select::placeholder {
+            color: rgba(212, 175, 55, 0.5);
+            font-style: italic;
+        }
+        
+        .altar-button {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #D4AF37, #8B6914);
+            color: #1a1f2e;
+            border: none;
+            border-radius: 15px;
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .altar-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+        
+        .altar-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .altar-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
+        }
+        
+        .altar-symbols {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .altar-symbol {
+            width: 60px;
+            height: 60px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 10px;
+            animation: symbol-rotate 6s linear infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .altar-symbol:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: #D4AF37;
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        @keyframes symbol-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .altar-runes {
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            color: rgba(212, 175, 55, 0.6);
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+        }
+        
+        .altar-crystal {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #D4AF37, #fff, #D4AF37);
+            border-radius: 50%;
+            animation: crystal-float 5s ease-in-out infinite;
+        }
+        
+        .crystal1 { top: 10%; left: 5%; animation-delay: 0s; }
+        .crystal2 { top: 20%; right: 10%; animation-delay: 1s; }
+        .crystal3 { bottom: 15%; left: 8%; animation-delay: 2s; }
+        .crystal4 { bottom: 25%; right: 5%; animation-delay: 3s; }
+        
+        @keyframes crystal-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        .experimento-container {
+            background: #1a1f2e;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 2px solid #D4AF37;
+        }
+        
+        .lineas-paralelas {
+            position: relative;
+            height: 200px;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .linea {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: #D4AF37;
+            opacity: 0.6;
+        }
+        
+        .linea:nth-child(1) { left: 20%; }
+        .linea:nth-child(2) { left: 40%; }
+        .linea:nth-child(3) { left: 60%; }
+        .linea:nth-child(4) { left: 80%; }
+        .linea:nth-child(5) { left: 100%; }
+        
+        .agujas-experimento {
+            position: relative;
+            height: 150px;
+            margin: 20px 0;
+        }
+        
+        .aguja-experimental {
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, #D4AF37, #8B6914);
+            top: 0;
+            transform-origin: center bottom;
+            transition: transform 2s ease-out;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+        }
+        
+        #aguja-exp1 { left: 16%; }
+        #aguja-exp2 { left: 36%; }
+        #aguja-exp3 { left: 56%; }
+        #aguja-exp4 { left: 76%; }
+        #aguja-exp5 { left: 96%; }
     </style>
 </head>
 <body>
     <h1>🎱 Amuleto Bonoloto</h1>
-    <p>Genera tus apuestas para la Bonoloto</p>
+    <p>🔮 Genera tus números para la Bonoloto con nuestras predicciones medievales 🔮</p>
     
     <div class="menu">
         <button class="menu-btn" onclick="mostrarPantalla('orbe')">🎱 El Orbe</button>
         <button class="menu-btn" onclick="mostrarPantalla('buffon')">📏 Mesa Buffon</button>
+        <button class="menu-btn" onclick="mostrarPantalla('experimento')">📏 Experimento Buffon</button>
         <button class="menu-btn" onclick="mostrarPantalla('dados')">🎲 Juego de Dados</button>
         <button class="menu-btn" onclick="mostrarPantalla('altar')">⭐ Altar de Datos</button>
         <button class="menu-btn" onclick="mostrarPantalla('resultados')">📊 Resultados</button>
@@ -304,29 +825,29 @@
     </div>
     
     <div id="pantalla-orbe" class="pantalla active">
-        <h2>🎱 El Orbe Principal</h2>
-        <div class="orbe" onclick="mostrarSelector()">
-            ✨
-        </div>
-    
-        <div id="selector" class="selector" style="display: none;">
-            <h3>Selecciona número de columnas</h3>
-            <div class="columnas">
-                <div class="columna" onclick="seleccionarColumna(1)">1</div>
-                <div class="columna" onclick="seleccionarColumna(2)">2</div>
-                <div class="columna" onclick="seleccionarColumna(3)">3</div>
-                <div class="columna" onclick="seleccionarColumna(4)">4</div>
-                <div class="columna" onclick="seleccionarColumna(5)">5</div>
-                <div class="columna" onclick="seleccionarColumna(6)">6</div>
-                <div class="columna" onclick="seleccionarColumna(7)">7</div>
-                <div class="columna" onclick="seleccionarColumna(8)">8</div>
+        <h2>🔮 El Orbe Principal</h2>
+        
+        <div class="orbe-container">
+            <div class="orbe-energia energia1"></div>
+            <div class="orbe-energia energia2"></div>
+            <div class="orbe-energia energia3"></div>
+            <div class="orbe-energia energia4"></div>
+            
+            <div class="orbe-rayos">
+                <div class="rayo"></div>
+                <div class="rayo"></div>
+                <div class="rayo"></div>
+                <div class="rayo"></div>
+                <div class="rayo"></div>
+                <div class="rayo"></div>
+                <div class="rayo"></div>
+                <div class="rayo"></div>
             </div>
             
-            <h3>Selecciona motor</h3>
-            <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0;">
-                <button class="generar" onclick="generarApuestas('historico')">Motor Histórico</button>
-                <button class="generar" onclick="generarApuestas('buffon')">Motor Buffon</button>
-                <button class="generar" onclick="generarApuestas('amuleto')">Motor Amuleto</button>
+            <div class="orbe-principal" onclick="generarNumerosOrbe()"></div>
+            
+            <div class="orbe-instrucciones">
+                🔮 TOCA EL ORBE SAGRADO PARA REVELAR TUS NÚMEROS MÁGICOS 🔮
             </div>
         </div>
         
@@ -338,13 +859,43 @@
     
     <div id="pantalla-buffon" class="pantalla">
         <h2>📏 Mesa de Buffon</h2>
-        <p>Agita el móvil (o haz clic) para tirar las agujas</p>
+        <p>📱 Agita el móvil para lanzar agujas y generar 8 predicciones</p>
+        
         <div class="buffon-mesa">
-            <div class="aguja" onclick="tirarAguja()">📏</div>
+            <div class="aguja" onclick="tirarAgujaBuffon()">📏</div>
             <div class="buffon-resultado">
                 <h3>Resultado de las agujas:</h3>
                 <div id="buffon-numeros"></div>
-                <button class="generar" onclick="tirarTodas()">Tirar todas las agujas</button>
+                <button class="generar" onclick="tirarTodasBuffon()">📏 Tirar Todas las Agujas</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="pantalla-experimento" class="pantalla">
+        <h2>📏 Experimento de Buffon</h2>
+        <p>📱 Agita el móvil para el experimento científico y generar 8 predicciones</p>
+        
+        <div class="experimento-container">
+            <div class="lineas-paralelas">
+                <div class="linea"></div>
+                <div class="linea"></div>
+                <div class="linea"></div>
+                <div class="linea"></div>
+                <div class="linea"></div>
+            </div>
+            
+            <div class="agujas-experimento">
+                <div id="aguja-exp1" class="aguja-experimental"></div>
+                <div id="aguja-exp2" class="aguja-experimental"></div>
+                <div id="aguja-exp3" class="aguja-experimental"></div>
+                <div id="aguja-exp4" class="aguja-experimental"></div>
+                <div id="aguja-exp5" class="aguja-experimental"></div>
+            </div>
+            
+            <div class="resultado-container">
+                <h3>📏 Resultado del Experimento:</h3>
+                <div id="experimento-numeros"></div>
+                <button class="generar" onclick="tirarExperimentoBuffon()">📏 Realizar Experimento</button>
             </div>
         </div>
     </div>
@@ -357,6 +908,11 @@
             <div class="dados-container">
                 <div id="dado1" class="dado">🎲</div>
                 <div id="dado2" class="dado">🎲</div>
+            </div>
+            
+            <div class="dados-resultado" id="dados-resultado" style="display: none;">
+                <div id="dado1-resultado" class="dado-resultado">⚀</div>
+                <div id="dado2-resultado" class="dado-resultado">⚀</div>
             </div>
             
             <div class="agujas-container">
@@ -375,40 +931,104 @@
     </div>
     
     <div id="pantalla-altar" class="pantalla">
-        <h2>⭐ Altar de Datos Personales</h2>
-        <p>Configura tus datos para el Motor Amuleto</p>
-        
-        <div class="form-container">
-            <div class="form-group">
-                <label>Signo Zodiacal:</label>
-                <select id="zodiaco">
-                    <option value="aries">♈ Aries</option>
-                    <option value="tauro">♉ Tauro</option>
-                    <option value="geminis">♊ Géminis</option>
-                    <option value="cancer">♋ Cáncer</option>
-                    <option value="leo">♌ Leo</option>
-                    <option value="virgo">♍ Virgo</option>
-                    <option value="libra">♎ Libra</option>
-                    <option value="escorpio">♏ Escorpio</option>
-                    <option value="sagitario">♐ Sagitario</option>
-                    <option value="capricornio">♑ Capricornio</option>
-                    <option value="acuario">♒ Acuario</option>
-                    <option value="piscis">♓ Piscis</option>
-                </select>
+        <div class="altar-container">
+            <div class="altar-crystal crystal1"></div>
+            <div class="altar-crystal crystal2"></div>
+            <div class="altar-crystal crystal3"></div>
+            <div class="altar-crystal crystal4"></div>
+            
+            <h2 class="altar-title">🔮 Altar Esotérico de Datos 🔮</h2>
+            
+            <div class="altar-runes">ᚱᚾᚷᚹ ᛏᛟᚾᛖ ᛗᛁᚷᚺᛏ</div>
+            
+            <div class="altar-symbols">
+                <div class="altar-symbol" onclick="selectSymbol('🌟')">🌟</div>
+                <div class="altar-symbol" onclick="selectSymbol('🔮')">🔮</div>
+                <div class="altar-symbol" onclick="selectSymbol('💎')">💎</div>
+                <div class="altar-symbol" onclick="selectSymbol('🌙')">🌙</div>
+                <div class="altar-symbol" onclick="selectSymbol('☀️')">☀️</div>
+                <div class="altar-symbol" onclick="selectSymbol('⚡')">⚡</div>
+                <div class="altar-symbol" onclick="selectSymbol('🔥')">🔥</div>
+                <div class="altar-symbol" onclick="selectSymbol('💫')">💫</div>
             </div>
-            <div class="form-group">
-                <label>Color Favorito:</label>
-                <select id="color">
-                    <option value="rojo">🔴 Rojo</option>
-                    <option value="azul">🔵 Azul</option>
-                    <option value="verde">🟢 Verde</option>
-                    <option value="amarillo">🟡 Amarillo</option>
-                    <option value="morado">🟣 Morado</option>
-                    <option value="naranja">🟠 Naranja</option>
-                    <option value="blanco">⚪ Blanco</option>
-                    <option value="negro">⚫ Negro</option>
-                </select>
-            </div>
+            
+            <form class="altar-form" onsubmit="guardarDatosAltar(event)">
+                <div class="altar-group">
+                    <label class="altar-label">🌟 Signo Zodiacal</label>
+                    <select class="altar-select" id="zodiaco" required>
+                        <option value="">Selecciona tu signo...</option>
+                        <option value="aries">♈ Aries - Guerrero del Fuego</option>
+                        <option value="tauro">♉ Tauro - Guardián de la Tierra</option>
+                        <option value="geminis">♊ Géminis - Mensajero del Aire</option>
+                        <option value="cancer">♋ Cáncer - Protector del Agua</option>
+                        <option value="leo">♌ Leo - Rey del Sol</option>
+                        <option value="virgo">♍ Virgo - Sabia de la Naturaleza</option>
+                        <option value="libra">♎ Libra - Justicia del Equilibrio</option>
+                        <option value="escorpio">♏ Escorpión - Guardián de los Misterios</option>
+                        <option value="sagitario">♐ Sagitario - Arquero del Conocimiento</option>
+                        <option value="capricornio">♑ Capricornio - Maestro del Tiempo</option>
+                        <option value="acuario">♒ Acuario - Portador del Futuro</option>
+                        <option value="piscis">♓ Piscis - Soñador del Cosmos</option>
+                    </select>
+                </div>
+                
+                <div class="altar-group">
+                    <label class="altar-label">🎨 Color Sagrado</label>
+                    <select class="altar-select" id="color" required>
+                        <option value="">Selecciona tu color...</option>
+                        <option value="rojo">🔴 Rojo - Pasión y Valor</option>
+                        <option value="azul">🔵 Azul - Sabiduría y Calma</option>
+                        <option value="verde">🟢 Verde - Naturaleza y Crecimiento</option>
+                        <option value="dorado">🟡 Dorado - Riqueza y Poder</option>
+                        <option value="plateado">⚪ Plateado - Magia y Misterio</option>
+                        <option value="morado">🟣 Morado - Espiritualidad y Intuición</option>
+                        <option value="naranja">🟠 Naranja - Energía y Creatividad</option>
+                        <option value="negro">⚫ Negro - Protección y Poder</option>
+                    </select>
+                </div>
+                
+                <div class="altar-group">
+                    <label class="altar-label">⚔️ Espíritu Guerrero</label>
+                    <input type="text" class="altar-input" id="equipo" placeholder="Nombre de tu clan o tribu..." required>
+                </div>
+                
+                <div class="altar-group">
+                    <label class="altar-label">🔮 Número Mágico</label>
+                    <input type="number" class="altar-input" id="numero-fav" placeholder="Tu número de la suerte (1-49)..." min="1" max="49" required>
+                </div>
+                
+                <div class="altar-group">
+                    <label class="altar-label">🌙 Elemento Astral</label>
+                    <select class="altar-select" id="elemento" required>
+                        <option value="">Selecciona tu elemento...</option>
+                        <option value="fuego">🔥 Fuego - Transformación y Pasión</option>
+                        <option value="agua">💧 Agua - Intuición y Emoción</option>
+                        <option value="tierra">🌍 Tierra - Estabilidad y Abundancia</option>
+                        <option value="aire">🌬️ Aire - Libertad y Comunicación</option>
+                        <option value="ether">✨ Éter - Espiritualidad y Conexión</option>
+                    </select>
+                </div>
+                
+                <div class="altar-group">
+                    <label class="altar-label">💎 Cristal Personal</label>
+                    <select class="altar-select" id="cristal" required>
+                        <option value="">Selecciona tu cristal...</option>
+                        <option value="cuarzo">🔮 Cuarzo Claro - Claridad y Purificación</option>
+                        <option value="amatista">💜 Amatista - Intuición y Protección</option>
+                        <option value="citrino">💛 Citrino - Prosperidad y Éxito</option>
+                        <option value="obsidiana">⚫ Obsidiana - Poder y Transformación</option>
+                        <option value="turquesa">🔵 Turquesa - Sanación y Comunicación</option>
+                        <option value="rubí">❤️ Rubí - Pasión y Coraje</option>
+                        <option value="esmeralda">💚 Esmeralda - Amor y Abundancia</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="altar-button">
+                    🔮 CONSAGRAR DATOS MÁGICOS 🔮
+                </button>
+            </form>
+            
+            <div class="altar-runes">ᚠᚨᚱᚲᚨ ᚾᛟᚹ ᚠᛟᚱᚷᛖ</div>
             <div class="form-group">
                 <label>Equipo de Fútbol:</label>
                 <input type="text" id="equipo" placeholder="Ej: Real Madrid, Barcelona...">
@@ -586,15 +1206,181 @@
         }
         
         // Altar de Datos
-        function guardarDatosAltar() {
-            datosAltar = {
-                zodiaco: document.getElementById('zodiaco').value,
-                color: document.getElementById('color').value,
-                equipo: document.getElementById('equipo').value
+        let selectedSymbol = '🌟';
+        
+        function selectSymbol(symbol) {
+            selectedSymbol = symbol;
+            
+            // Efecto visual al seleccionar símbolo
+            let symbols = document.querySelectorAll('.altar-symbol');
+            symbols.forEach(s => {
+                s.style.background = 'rgba(212, 175, 55, 0.1)';
+                s.style.borderColor = 'rgba(212, 175, 55, 0.3)';
+            });
+            
+            event.target.style.background = 'rgba(212, 175, 55, 0.3)';
+            event.target.style.borderColor = '#D4AF37';
+            
+            // Efecto místico
+            event.target.style.transform = 'scale(1.5) rotate(360deg)';
+            setTimeout(() => {
+                event.target.style.transform = 'scale(1.2)';
+            }, 500);
+        }
+        
+        function guardarDatosAltar(event) {
+            event.preventDefault();
+            
+            let zodiaco = document.getElementById('zodiaco').value;
+            let color = document.getElementById('color').value;
+            let equipo = document.getElementById('equipo').value;
+            let numeroFav = document.getElementById('numero-fav').value;
+            let elemento = document.getElementById('elemento').value;
+            let cristal = document.getElementById('cristal').value;
+            
+            if (!zodiaco || !color || !equipo || !numeroFav || !elemento || !cristal) {
+                mostrarMensajeAltar('⚠️ Debes completar todos los campos mágicos', 'warning');
+                return;
+            }
+            
+            // Guardar datos con toque esotérico
+            let datosAltar = {
+                zodiaco: zodiaco,
+                color: color,
+                equipo: equipo,
+                numeroFav: numeroFav,
+                elemento: elemento,
+                cristal: cristal,
+                simbolo: selectedSymbol,
+                fechaConsagracion: new Date().toLocaleString('es-ES'),
+                energiaMagica: Math.floor(Math.random() * 100) + 1,
+                id: Date.now()
             };
             
             localStorage.setItem('datosAltar', JSON.stringify(datosAltar));
-            alert('✅ Datos guardados correctamente');
+            
+            // Efecto de consagración
+            consagrarAltar(datosAltar);
+        }
+        
+        function consagrarAltar(datos) {
+            // Animación mística de consagración
+            let container = document.querySelector('.altar-container');
+            container.style.animation = 'mystical-glow 2s ease-in-out';
+            
+            // Mensaje mágico
+            let mensajes = [
+                `🔮 ¡${datos.zodiaco.toUpperCase()} ha sido consagrado!`,
+                `💎 El cristal ${datos.cristal} absorbe tu energía`,
+                `🌟 Tu número mágico ${datos.numeroFav} está activado`,
+                `⚔️ El clan ${datos.equipo} te protege`,
+                `🔥 El elemento ${datos.elemento} te fortalece`
+            ];
+            
+            mostrarMensajeAltar(mensajes.join('\n'), 'success');
+            
+            // Actualizar motor Amuleto con nuevos datos
+            setTimeout(() => {
+                container.style.animation = '';
+                mostrarMensajeAltar('✨ Tus datos mágicos están listos para generar apuestas personalizadas', 'info');
+            }, 2000);
+        }
+        
+        function mostrarMensajeAltar(mensaje, tipo) {
+            let container = document.querySelector('.altar-container');
+            
+            let mensajeDiv = document.createElement('div');
+            mensajeDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: ${tipo === 'success' ? 'linear-gradient(135deg, #D4AF37, #8B6914)' : 'linear-gradient(135deg, #1a1f2e, #2a1f3e)'};
+                color: ${tipo === 'success' ? '#1a1f2e' : '#D4AF37'};
+                padding: 30px;
+                border-radius: 20px;
+                border: 3px solid #D4AF37;
+                font-size: 1.2rem;
+                text-align: center;
+                z-index: 1000;
+                box-shadow: 0 20px 60px rgba(212, 175, 55, 0.6);
+                animation: title-pulse 1s ease-in-out;
+                white-space: pre-line;
+                max-width: 400px;
+            `;
+            
+            mensajeDiv.textContent = mensaje;
+            document.body.appendChild(mensajeDiv);
+            
+            setTimeout(() => {
+                mensajeDiv.remove();
+            }, 3000);
+        }
+        
+        function generarApuestaDesdeAltar() {
+            let datos = JSON.parse(localStorage.getItem('datosAltar') || '{}');
+            
+            if (!datos.zodiaco) {
+                mostrarMensajeAltar('⚠️ Primero debes consagrar tus datos en el altar', 'warning');
+                return null;
+            }
+            
+            // Algoritmo místico basado en datos del altar
+            let baseNumeros = [];
+            let usados = new Set();
+            
+            // Basado en zodiaco (números astrales)
+            let zodiacoNumeros = {
+                'aries': [1, 9, 17, 25, 33, 41],
+                'tauro': [2, 10, 18, 26, 34, 42],
+                'geminis': [3, 11, 19, 27, 35, 43],
+                'cancer': [4, 12, 20, 28, 36, 44],
+                'leo': [5, 13, 21, 29, 37, 45],
+                'virgo': [6, 14, 22, 30, 38, 46],
+                'libra': [7, 15, 23, 31, 39, 47],
+                'escorpio': [8, 16, 24, 32, 40, 48],
+                'sagitario': [9, 17, 25, 33, 41, 49],
+                'capricornio': [10, 18, 26, 34, 42, 1],
+                'acuario': [11, 19, 27, 35, 43, 2],
+                'piscis': [12, 20, 28, 36, 44, 3]
+            };
+            
+            // Añadir número mágico personal
+            let numeroMagico = parseInt(datos.numeroFav);
+            if (numeroMagico >= 1 && numeroMagico <= 49) {
+                baseNumeros.push(numeroMagico);
+                usados.add(numeroMagico);
+            }
+            
+            // Añadir números del zodiaco
+            if (zodiacoNumeros[datos.zodiaco]) {
+                zodiacoNumeros[datos.zodiaco].forEach(num => {
+                    if (baseNumeros.length < 6 && !usados.has(num)) {
+                        baseNumeros.push(num);
+                        usados.add(num);
+                    }
+                });
+            }
+            
+            // Completar con números basados en elemento y cristal
+            while (baseNumeros.length < 6) {
+                let num = Math.floor(Math.random() * 49) + 1;
+                if (!usados.has(num)) {
+                    baseNumeros.push(num);
+                    usados.add(num);
+                }
+            }
+            
+            // Complementario basado en energía mágica
+            let complementario = (datos.energiaMagica % 9) + 1;
+            
+            return {
+                numeros: baseNumeros.sort((a, b) => a - b),
+                complementario: complementario,
+                motor: `⭐ Altar Esotérico (${datos.simbolo} ${datos.zodiaco})`,
+                fecha: new Date().toLocaleString('es-ES'),
+                id: Date.now()
+            };
         }
         
         // Apuestas Guardadas
@@ -636,6 +1422,237 @@
             }
         }
         
+        // Funciones para Mesa Buffon
+        let buffonLanzado = false;
+        
+        function iniciarMesaBuffon() {
+            if (!window.DeviceMotionEvent) {
+                document.querySelector('.buffon-resultado').innerHTML = `
+                    <h3>📏 Mesa Buffon Manual</h3>
+                    <p>Su navegador no soporta el acelerómetro. Usa el modo manual.</p>
+                    <button class="generar" onclick="tirarTodasBuffon()">📏 Tirar Todas las Agujas</button>
+                `;
+                return;
+            }
+            
+            // Activar acelerómetro para Mesa Buffon
+            window.addEventListener('devicemotion', function(event) {
+                if (buffonLanzado) return;
+                
+                let acceleration = event.accelerationIncludingGravity;
+                let x = acceleration.x;
+                let y = acceleration.y;
+                let z = acceleration.z;
+                
+                let magnitud = Math.sqrt(x*x + y*y + z*z);
+                
+                if (magnitud > 20) {
+                    console.log('¡Agitado! Magnitud:', magnitud);
+                    tirarTodasBuffon();
+                }
+            });
+        }
+        
+        function tirarAgujaBuffon() {
+            tirarTodasBuffon();
+        }
+        
+        function tirarTodasBuffon() {
+            if (buffonLanzado) return;
+            
+            buffonLanzado = true;
+            
+            // Animar aguja
+            let aguja = document.querySelector('.aguja');
+            aguja.style.transition = 'all 1.5s ease-in';
+            aguja.style.transform = 'rotate(720deg) scale(1.2)';
+            
+            // Generar 8 predicciones
+            setTimeout(() => {
+                let predicciones = generarPrediccionesBuffon();
+                mostrarResultadoBuffon(predicciones);
+                buffonLanzado = false;
+            }, 1500);
+        }
+        
+        function generarPrediccionesBuffon() {
+            let predicciones = [];
+            
+            for (let i = 0; i < 8; i++) {
+                let numeros = [];
+                let usados = new Set();
+                
+                // Generar 6 números únicos entre 1-49
+                while (numeros.length < 6) {
+                    let num = Math.floor(Math.random() * 49) + 1;
+                    if (!usados.has(num)) {
+                        numeros.push(num);
+                        usados.add(num);
+                    }
+                }
+                
+                // Complementario
+                let complementario = Math.floor(Math.random() * 9) + 1;
+                
+                predicciones.push({
+                    numeros: numeros.sort((a, b) => a - b),
+                    complementario: complementario,
+                    motor: '📏 Mesa Buffon (Acelerómetro)'
+                });
+            }
+            
+            return predicciones;
+        }
+        
+        function mostrarResultadoBuffon(predicciones) {
+            let html = '<div class="predicciones-grid">';
+            
+            predicciones.forEach((pred, index) => {
+                html += `
+                    <div class="prediccion-item">
+                        <div class="prediccion-numeros">${pred.numeros.join('-')}</div>
+                        <div class="prediccion-complementario">C: ${pred.complementario}</div>
+                        <div class="predicccion-motor">${pred.motor}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            html += '<button class="generar" onclick="tirarTodasBuffon()">📏 Tirar Otra Vez</button>';
+            html += '<button class="generar" onclick="mostrarPantalla(\'guardadas\')">💾 Ver Apuestas Guardadas</button>';
+            
+            document.getElementById('buffon-numeros').innerHTML = html;
+            
+            // Guardar todas las predicciones
+            predicciones.forEach(pred => {
+                let apuesta = {
+                    ...pred,
+                    fecha: new Date().toLocaleString('es-ES'),
+                    id: Date.now() + Math.random()
+                };
+                
+                apuestasGuardadas.push(apuesta);
+            });
+            
+            localStorage.setItem('apuestasGuardadas', JSON.stringify(apuestasGuardadas));
+            actualizarApuestasGuardadas();
+        }
+        
+        // Funciones para Experimento Buffon
+        let experimentoLanzado = false;
+        
+        function iniciarExperimentoBuffon() {
+            if (!window.DeviceMotionEvent) {
+                document.querySelector('.resultado-container').innerHTML = `
+                    <h3>📏 Experimento Buffon Manual</h3>
+                    <p>Su navegador no soporta el acelerómetro. Usa el modo manual.</p>
+                    <button class="generar" onclick="tirarExperimentoBuffon()">📏 Realizar Experimento</button>
+                `;
+                return;
+            }
+            
+            // Activar acelerómetro para Experimento Buffon
+            window.addEventListener('devicemotion', function(event) {
+                if (experimentoLanzado) return;
+                
+                let acceleration = event.accelerationIncludingGravity;
+                let x = acceleration.x;
+                let y = acceleration.y;
+                let z = acceleration.z;
+                
+                let magnitud = Math.sqrt(x*x + y*y + z*z);
+                
+                if (magnitud > 25) {
+                    console.log('¡Agitado! Magnitud:', magnitud);
+                    tirarExperimentoBuffon();
+                }
+            });
+        }
+        
+        function tirarExperimentoBuffon() {
+            if (experimentoLanzado) return;
+            
+            experimentoLanzado = true;
+            
+            // Animar agujas experimentales
+            for (let i = 1; i <= 5; i++) {
+                let aguja = document.getElementById(`aguja-exp${i}`);
+                let angulo = Math.random() * 360;
+                aguja.style.transition = 'all 2s ease-in';
+                aguja.style.transform = `rotate(${angulo}deg) translateY(70px)`;
+            }
+            
+            // Generar 8 predicciones
+            setTimeout(() => {
+                let predicciones = generarPrediccionesExperimento();
+                mostrarResultadoExperimento(predicciones);
+                experimentoLanzado = false;
+            }, 2000);
+        }
+        
+        function generarPrediccionesExperimento() {
+            let predicciones = [];
+            
+            for (let i = 0; i < 8; i++) {
+                let numeros = [];
+                let usados = new Set();
+                
+                // Generar 6 números únicos entre 1-49 (método científico)
+                while (numeros.length < 6) {
+                    let num = Math.floor(Math.random() * 49) + 1;
+                    if (!usados.has(num)) {
+                        numeros.push(num);
+                        usados.add(num);
+                    }
+                }
+                
+                // Complementario
+                let complementario = Math.floor(Math.random() * 9) + 1;
+                
+                predicciones.push({
+                    numeros: numeros.sort((a, b) => a - b),
+                    complementario: complementario,
+                    motor: '📏 Experimento Buffon (Científico)'
+                });
+            }
+            
+            return predicciones;
+        }
+        
+        function mostrarResultadoExperimento(predicciones) {
+            let html = '<div class="predicciones-grid">';
+            
+            predicciones.forEach((pred, index) => {
+                html += `
+                    <div class="prediccion-item">
+                        <div class="prediccion-numeros">${pred.numeros.join('-')}</div>
+                        <div class="prediccion-complementario">C: ${pred.complementario}</div>
+                        <div class="predicccion-motor">${pred.motor}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            html += '<button class="generar" onclick="tirarExperimentoBuffon()">📏 Realizar Otro Experimento</button>';
+            html += '<button class="generar" onclick="mostrarPantalla(\'guardadas\')">💾 Ver Apuestas Guardadas</button>';
+            
+            document.getElementById('experimento-numeros').innerHTML = html;
+            
+            // Guardar todas las predicciones
+            predicciones.forEach(pred => {
+                let apuesta = {
+                    ...pred,
+                    fecha: new Date().toLocaleString('es-ES'),
+                    id: Date.now() + Math.random()
+                };
+                
+                apuestasGuardadas.push(apuesta);
+            });
+            
+            localStorage.setItem('apuestasGuardadas', JSON.stringify(apuestasGuardadas));
+            actualizarApuestasGuardadas();
+        }
+        
         // Funciones para Juego de Dados
         let dadosLanzados = false;
         
@@ -672,29 +1689,67 @@
             
             dadosLanzados = true;
             
+            // Ocultar resultado anterior si existe
+            document.getElementById('dados-resultado').style.display = 'none';
+            document.querySelector('.dados-container').style.display = 'block';
+            
             // Tirar dados
             let dado1 = Math.floor(Math.random() * 6) + 1;
             let dado2 = Math.floor(Math.random() * 6) + 1;
             
-            // Animar dados
-            document.getElementById('dado1').textContent = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][dado1 - 1];
-            document.getElementById('dado2').textContent = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][dado2 - 1];
+            // Animar dados lanzando
+            let dadosElements = document.querySelectorAll('.dado');
+            dadosElements.forEach(dado => {
+                dado.classList.add('lanzando');
+            });
             
-            // Animar agujas cayendo
-            let angulo1 = Math.random() * 360;
-            let angulo2 = Math.random() * 360;
-            let angulo3 = Math.random() * 360;
-            
-            document.getElementById('aguja1').style.transform = `rotate(${angulo1}deg)`;
-            document.getElementById('aguja2').style.transform = `rotate(${angulo2}deg)`;
-            document.getElementById('aguja3').style.transform = `rotate(${angulo3}deg)`;
-            
-            // Generar números de Bonoloto basados en los dados
-            setTimeout(() => {
-                let numeros = generarNumerosDesdeDados(dado1, dado2);
-                mostrarResultadoDados(numeros);
-                dadosLanzados = false;
-            }, 1500);
+            // Simular múltiples tiradas durante la animación
+            let tiradas = 0;
+            let tiradasInterval = setInterval(() => {
+                dadosElements.forEach(dado => {
+                    let tirada = Math.floor(Math.random() * 6) + 1;
+                    dado.textContent = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][tirada - 1];
+                });
+                tiradas++;
+                
+                if (tiradas >= 8) {
+                    clearInterval(tiradasInterval);
+                    
+                    // Mostrar resultado final
+                    setTimeout(() => {
+                        dadosElements.forEach(dado => {
+                            dado.classList.remove('lanzando');
+                            dado.classList.add('resultado');
+                        });
+                        
+                        // Mostrar resultado final
+                        let resultado1 = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][dado1 - 1];
+                        let resultado2 = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][dado2 - 1];
+                        
+                        // Ocultar dados originales y mostrar resultado
+                        document.querySelector('.dados-container').style.display = 'none';
+                        document.getElementById('dados-resultado').style.display = 'flex';
+                        document.getElementById('dado1-resultado').textContent = resultado1;
+                        document.getElementById('dado2-resultado').textContent = resultado2;
+                        
+                        // Animar agujas cayendo
+                        let angulo1 = Math.random() * 360;
+                        let angulo2 = Math.random() * 360;
+                        let angulo3 = Math.random() * 360;
+                        
+                        document.getElementById('aguja1').style.transform = `rotate(${angulo1}deg) translateY(100px)`;
+                        document.getElementById('aguja2').style.transform = `rotate(${angulo2}deg) translateY(100px)`;
+                        document.getElementById('aguja3').style.transform = `rotate(${angulo3}deg) translateY(100px)`;
+                        
+                        // Generar números de Bonoloto basados en los dados
+                        setTimeout(() => {
+                            let numeros = generarNumerosDesdeDados(dado1, dado2);
+                            mostrarResultadoDados(numeros);
+                            dadosLanzados = false;
+                        }, 1500);
+                    }, 500);
+                }
+            }, 150);
         }
         
         function tirarDadosManual() {
@@ -733,18 +1788,48 @@
             apuestasGuardadas.push(apuesta);
             localStorage.setItem('apuestasGuardadas', JSON.stringify(apuestasGuardadas));
             
-            // Mostrar resultado
+            // Mostrar resultado con efecto dramático
             document.querySelector('.resultado-container').innerHTML = `
                 <h3>🎲 ¡Dados Tirados!</h3>
+                <div class="dados-resultado" style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;">
+                    <div class="dado-resultado">${document.getElementById('dado1-resultado').textContent}</div>
+                    <div class="dado-resultado">${document.getElementById('dado2-resultado').textContent}</div>
+                </div>
                 <div class="apuesta-numeros">${apuesta.numeros.slice(0, -1).join('-')}</div>
                 <div class="apuesta-motor">Complementario: ${apuesta.complementario}</div>
                 <div class="apuesta-motor">Motor: ${apuesta.motor}</div>
                 <div class="apuesta-motor">${apuesta.fecha}</div>
-                <button class="generar" onclick="tirarDadosManual()">🎲 Tirar Otra Vez</button>
+                <button class="generar" onclick="resetDados()">🎲 Tirar Otra Vez</button>
                 <button class="generar" onclick="mostrarPantalla('guardadas')">💾 Ver Apuestas Guardadas</button>
             `;
             
             actualizarApuestasGuardadas();
+        }
+        
+        function resetDados() {
+            // Resetear dados a estado inicial
+            document.querySelector('.dados-container').style.display = 'block';
+            document.getElementById('dados-resultado').style.display = 'none';
+            
+            // Resetear clases
+            let dadosElements = document.querySelectorAll('.dado');
+            dadosElements.forEach(dado => {
+                dado.classList.remove('lanzando', 'resultado');
+                dado.textContent = '🎲';
+            });
+            
+            // Resetear agujas
+            document.getElementById('aguja1').style.transform = 'rotate(0deg)';
+            document.getElementById('aguja2').style.transform = 'rotate(0deg)';
+            document.getElementById('aguja3').style.transform = 'rotate(0deg)';
+            
+            // Resetear contenedor de resultado
+            document.querySelector('.resultado-container').innerHTML = `
+                <h3>📱 Agita el móvil para tirar los dados</h3>
+                <p>📏 Las agujas caerán según el resultado</p>
+                <p>🎯 ¡Generará tus números de la Bonoloto!</p>
+                <button class="generar" onclick="tirarDadosManual()">🎲 Tirar Dados Manualmente</button>
+            `;
         }
         
         // Inicializar juego de datos cuando se carga la página
@@ -896,6 +1981,9 @@
         window.onload = function() {
             cargarDatos();
             inicializarAPI();
+            iniciarMesaBuffon();
+            iniciarExperimentoBuffon();
+            iniciarJuegoDeDados();
         };
     </script>
 </body>
