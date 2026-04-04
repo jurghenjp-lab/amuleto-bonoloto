@@ -844,7 +844,7 @@
                 <div class="rayo"></div>
             </div>
             
-            <div class="orbe-principal" onclick="console.log('🔮 Click en orbe'); generarNumerosOrbe();"></div>
+            <div class="orbe-principal" onclick="generarNumerosOrbe()"></div>
             
             <div class="orbe-instrucciones">
                 🔮 TOCA EL ORBE SAGRADO PARA REVELAR TUS NÚMEROS MÁGICOS 🔮
@@ -1321,15 +1321,10 @@
         }
         
         function generarNumerosOrbe() {
-            console.log('🔮 Orbe pulsado - Iniciando generación...');
-            
             // Primero intentar con datos del altar
             let apuestaAltar = generarApuestaDesdeAltar();
             
-            console.log('🔮 Apuesta desde altar:', apuestaAltar);
-            
             if (apuestaAltar) {
-                console.log('🔮 Usando datos del altar...');
                 // Si hay datos del altar, usarlos
                 const resultado = document.getElementById('resultado');
                 const numerosDiv = document.getElementById('numerosGenerados');
@@ -1353,27 +1348,20 @@
                 numerosDiv.innerHTML = html;
                 resultado.style.display = 'block';
                 
-                console.log('🔮 Apuestas guardadas:', apuestasGuardadas.length);
-                
                 // Guardar en localStorage
                 localStorage.setItem('apuestasGuardadas', JSON.stringify(apuestasGuardadas));
                 actualizarApuestasGuardadas();
                 
             } else {
-                console.log('🔮 No hay datos del altar, usando motor genérico...');
                 // Si no hay datos del altar, usar el motor amuleto genérico
                 generarApuestas('amuleto');
             }
         }
         
         function generarApuestaDesdeAltar() {
-            console.log('🔮 Generando apuesta desde altar...');
             let datos = JSON.parse(localStorage.getItem('datosAltar') || '{}');
             
-            console.log('🔮 Datos del altar:', datos);
-            
             if (!datos.zodiaco) {
-                console.log('🔮 No hay zodiaco en el altar');
                 mostrarMensajeAltar('⚠️ Primero debes consagrar tus datos en el altar', 'warning');
                 return null;
             }
