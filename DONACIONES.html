@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Donaciones - Amuleto Bonoloto</title>
+    <meta name="description" content="Apoya el desarrollo de Amuleto Bonoloto con una donación">
+    <meta name="theme-color" content="#0B0E14">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0B0E14 0%, #1a1f2e 100%);
+            color: #D4AF37;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .donation-container {
+            background: #1a1f2e;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            border: 2px solid #D4AF37;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        .donation-header {
+            margin-bottom: 30px;
+        }
+        
+        .donation-header h1 {
+            font-size: 2.5rem;
+            color: #D4AF37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            margin-bottom: 10px;
+        }
+        
+        .donation-header p {
+            color: #888;
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        
+        .donation-amounts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .amount-btn {
+            background: #2a2f3e;
+            color: #D4AF37;
+            border: 2px solid #D4AF37;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .amount-btn:hover {
+            background: #D4AF37;
+            color: #0B0E14;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .amount-btn.selected {
+            background: #D4AF37;
+            color: #0B0E14;
+        }
+        
+        .custom-amount {
+            margin: 20px 0;
+        }
+        
+        .custom-amount input {
+            width: 100%;
+            padding: 15px;
+            background: #2a2f3e;
+            color: white;
+            border: 2px solid #D4AF37;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .custom-amount input:focus {
+            outline: none;
+            background: #3a3f4e;
+        }
+        
+        .donate-btn {
+            background: #D4AF37;
+            color: #0B0E14;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .donate-btn:hover {
+            background: #8B6914;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.5);
+        }
+        
+        .donate-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .donation-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #D4AF37;
+        }
+        
+        .donation-info h3 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+        }
+        
+        .donation-info p {
+            color: #aaa;
+            line-height: 1.6;
+            margin: 5px 0;
+        }
+        
+        .back-btn {
+            background: transparent;
+            border: 2px solid #D4AF37;
+            color: #D4AF37;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        @media (max-width: 600px) {
+            .donation-container {
+                padding: 20px;
+            }
+            
+            .donation-header h1 {
+                font-size: 2rem;
+            }
+            
+            .donation-amounts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="donation-container">
+        <div class="donation-header">
+            <h1>💰 Apoya Amuleto Bonoloto</h1>
+            <p>Tu ayuda mantiene esta app gratuita para todos</p>
+            <p>¡Gracias por tu generosidad! 🙏</p>
+        </div>
+        
+        <div class="donation-amounts">
+            <button class="amount-btn" onclick="selectAmount(1)">€1</button>
+            <button class="amount-btn" onclick="selectAmount(3)">€3</button>
+            <button class="amount-btn" onclick="selectAmount(5)">€5</button>
+            <button class="amount-btn" onclick="selectAmount(10)">€10</button>
+            <button class="amount-btn" onclick="selectAmount(25)">€25</button>
+            <button class="amount-btn" onclick="selectAmount(50)">€50</button>
+        </div>
+        
+        <div class="custom-amount">
+            <input type="number" id="customAmount" placeholder="Otra cantidad (€)" min="1" step="1">
+        </div>
+        
+        <button class="donate-btn" onclick="processDonation()" id="donateBtn">
+            💚 Donar Ahora
+        </button>
+        
+        <div class="donation-info">
+            <h3>🎯 ¿A dónde va tu donación?</h3>
+            <p>• 📱 Mantenimiento de servidores</p>
+            <p>• 🎲 Desarrollo de nuevos motores</p>
+            <p>• 📊 API de sorteos actualizada</p>
+            <p>• 🚀 Mejoras continuas</p>
+            <p>• 💾 Hosting y dominios</p>
+        </div>
+        
+        <a href="web-version.html" class="back-btn">
+            ← Volver a la App
+        </a>
+    </div>
+
+    <script>
+        let selectedAmount = 0;
+        
+        function selectAmount(amount) {
+            selectedAmount = amount;
+            
+            // Actualizar botones
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            // Limpiar campo personalizado
+            document.getElementById('customAmount').value = '';
+            
+            // Actualizar botón de donar
+            updateDonateButton();
+        }
+        
+        // Manejar campo personalizado
+        document.getElementById('customAmount').addEventListener('input', function() {
+            selectedAmount = parseFloat(this.value) || 0;
+            
+            // Liminar selección de botones
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            updateDonateButton();
+        });
+        
+        function updateDonateButton() {
+            const btn = document.getElementById('donateBtn');
+            if (selectedAmount > 0) {
+                btn.textContent = `💚 Donar €${selectedAmount}`;
+                btn.disabled = false;
+            } else {
+                btn.textContent = '💚 Donar Ahora';
+                btn.disabled = true;
+            }
+        }
+        
+        function processDonation() {
+            if (selectedAmount <= 0) {
+                alert('Por favor, selecciona o introduce una cantidad válida');
+                return;
+            }
+            
+            // Aquí iría la integración con Stripe/PayPal
+            // Por ahora, simulamos el proceso
+            alert(`¡Gracias por tu donación de €${selectedAmount}! 💚\n\nEsta es una demostración. En producción, se redirigiría al pago seguro.`);
+            
+            // Guardar estadísticas
+            const donation = {
+                amount: selectedAmount,
+                date: new Date().toISOString(),
+                type: 'donation'
+            };
+            
+            let donations = JSON.parse(localStorage.getItem('donations') || '[]');
+            donations.push(donation);
+            localStorage.setItem('donations', JSON.stringify(donations));
+            
+            // Resetear formulario
+            selectedAmount = 0;
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('customAmount').value = '';
+            updateDonateButton();
+        }
+        
+        // Inicializar
+        updateDonateButton();
+    </script>
+</body>
+</html>

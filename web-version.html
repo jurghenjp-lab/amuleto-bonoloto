@@ -223,6 +223,69 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        
+        /* Estilos para Juego de Dados */
+        .juego-container {
+            background: #1a1f2e;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 2px solid #D4AF37;
+        }
+        
+        .dados-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .dado {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            background: #D4AF37;
+            border-radius: 15px;
+            line-height: 80px;
+            font-size: 40px;
+            margin: 0 20px;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .agujas-container {
+            position: relative;
+            height: 200px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .aguja {
+            position: absolute;
+            width: 3px;
+            height: 100px;
+            background: linear-gradient(to bottom, #D4AF37, #8B6914);
+            top: 0;
+            transform-origin: center bottom;
+            transition: transform 2s ease-out;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        .aguja1 { left: 25%; }
+        .aguja2 { left: 50%; }
+        .aguja3 { left: 75%; }
+        
+        .resultado-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -232,9 +295,12 @@
     <div class="menu">
         <button class="menu-btn" onclick="mostrarPantalla('orbe')">🎱 El Orbe</button>
         <button class="menu-btn" onclick="mostrarPantalla('buffon')">📏 Mesa Buffon</button>
+        <button class="menu-btn" onclick="mostrarPantalla('dados')">🎲 Juego de Dados</button>
         <button class="menu-btn" onclick="mostrarPantalla('altar')">⭐ Altar de Datos</button>
         <button class="menu-btn" onclick="mostrarPantalla('resultados')">📊 Resultados</button>
         <button class="menu-btn" onclick="mostrarPantalla('guardadas')">💾 Apuestas</button>
+        <button class="menu-btn" onclick="window.open('DONACIONES.html', '_blank')">💰 Donaciones</button>
+        <button class="menu-btn" onclick="window.open('COMENTARIOS.html', '_blank')">💬 Comentarios</button>
     </div>
     
     <div id="pantalla-orbe" class="pantalla active">
@@ -283,10 +349,36 @@
         </div>
     </div>
     
+    <div id="pantalla-dados" class="pantalla">
+        <h2>🎲 Juego de Dados con Acelerómetro</h2>
+        <p>📱 Agita el móvil para lanzar los dados y generar apuestas</p>
+        
+        <div class="juego-container">
+            <div class="dados-container">
+                <div id="dado1" class="dado">🎲</div>
+                <div id="dado2" class="dado">🎲</div>
+            </div>
+            
+            <div class="agujas-container">
+                <div id="aguja1" class="aguja"></div>
+                <div id="aguja2" class="aguja"></div>
+                <div id="aguja3" class="aguja"></div>
+            </div>
+            
+            <div class="resultado-container">
+                <h3>📱 Agita el móvil para tirar los dados</h3>
+                <p>📏 Las agujas caerán según el resultado</p>
+                <p>🎯 ¡Generará tus números de la Bonoloto!</p>
+                <button class="generar" onclick="tirarDadosManual()">🎲 Tirar Dados Manualmente</button>
+            </div>
+        </div>
+    </div>
+    
     <div id="pantalla-altar" class="pantalla">
-        <h2>⭐ Altar de Datos</h2>
-        <p>Configura tus datos personales para el Motor Amuleto</p>
-        <div class="altar-form">
+        <h2>⭐ Altar de Datos Personales</h2>
+        <p>Configura tus datos para el Motor Amuleto</p>
+        
+        <div class="form-container">
             <div class="form-group">
                 <label>Signo Zodiacal:</label>
                 <select id="zodiaco">
@@ -327,20 +419,17 @@
     
     <div id="pantalla-resultados" class="pantalla">
         <h2>📊 Resultados Oficiales</h2>
-        <p>Últimos sorteos de Bonoloto</p>
-        <div class="resultados-lista">
+        <p>Últimos sorteos de Bonoloto (actualizados automáticamente)</p>
+        <div class="resultados-lista" id="resultados-lista">
             <div class="sorteo">
-                <h4>Sorteo de hoy</h4>
-                <div class="numeros-sorteo">03-15-23-28-33-41</div>
-                <div class="complementario">Complementario: 12</div>
-                <div class="reintegro">Reintegro: 7</div>
+                <h4>Cargando resultados...</h4>
+                <div class="numeros-sorteo">Por favor, espera un momento</div>
             </div>
-            <div class="sorteo">
-                <h4>Sorteo anterior</h4>
-                <div class="numeros-sorteo">07-12-19-25-36-45</div>
-                <div class="complementario">Complementario: 08</div>
-                <div class="reintegro">Reintegro: 3</div>
-            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <button class="generar" onclick="actualizarResultados()">🔄 Actualizar Resultados</button>
+            <button class="generar" onclick="mostrarEstadisticas()">📊 Ver Estadísticas</button>
         </div>
     </div>
     
@@ -547,9 +636,266 @@
             }
         }
         
+        // Funciones para Juego de Dados
+        let dadosLanzados = false;
+        
+        function iniciarJuegoDeDados() {
+            if (!window.DeviceMotionEvent) {
+                document.querySelector('.resultado-container').innerHTML = `
+                    <h3>🎲 Juego de Dados Manual</h3>
+                    <p>Su navegador no soporta el acelerómetro. Usa el modo manual.</p>
+                    <button class="generar" onclick="tirarDadosManual()">🎲 Tirar Dados Manualmente</button>
+                `;
+                return;
+            }
+            
+            // Activar acelerómetro para dados
+            window.addEventListener('devicemotion', function(event) {
+                if (dadosLanzados) return;
+                
+                let acceleration = event.accelerationIncludingGravity;
+                let x = acceleration.x;
+                let y = acceleration.y;
+                let z = acceleration.z;
+                
+                let magnitud = Math.sqrt(x*x + y*y + z*z);
+                
+                if (magnitud > 15) {
+                    console.log('¡Agitado! Magnitud:', magnitud);
+                    tirarDadosConAcelerometro();
+                }
+            });
+        }
+        
+        function tirarDadosConAcelerometro() {
+            if (dadosLanzados) return;
+            
+            dadosLanzados = true;
+            
+            // Tirar dados
+            let dado1 = Math.floor(Math.random() * 6) + 1;
+            let dado2 = Math.floor(Math.random() * 6) + 1;
+            
+            // Animar dados
+            document.getElementById('dado1').textContent = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][dado1 - 1];
+            document.getElementById('dado2').textContent = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][dado2 - 1];
+            
+            // Animar agujas cayendo
+            let angulo1 = Math.random() * 360;
+            let angulo2 = Math.random() * 360;
+            let angulo3 = Math.random() * 360;
+            
+            document.getElementById('aguja1').style.transform = `rotate(${angulo1}deg)`;
+            document.getElementById('aguja2').style.transform = `rotate(${angulo2}deg)`;
+            document.getElementById('aguja3').style.transform = `rotate(${angulo3}deg)`;
+            
+            // Generar números de Bonoloto basados en los dados
+            setTimeout(() => {
+                let numeros = generarNumerosDesdeDados(dado1, dado2);
+                mostrarResultadoDados(numeros);
+                dadosLanzados = false;
+            }, 1500);
+        }
+        
+        function tirarDadosManual() {
+            tirarDadosConAcelerometro();
+        }
+        
+        function generarNumerosDesdeDados(dado1, dado2) {
+            // Convertir dados a números de Bonoloto (método Buffon mejorado)
+            let base = (dado1 + dado2) * 3;
+            let numeros = [];
+            
+            for (let i = 0; i < 6; i++) {
+                let num = (base + i * 7 + Math.floor(Math.random() * 10)) % 49 + 1;
+                if (num === 0) num = 49;
+                if (!numeros.includes(num)) {
+                    numeros.push(num);
+                }
+            }
+            
+            // Complementario
+            let complementario = Math.floor(Math.random() * 9) + 1;
+            
+            return [...numeros, complementario];
+        }
+        
+        function mostrarResultadoDados(numeros) {
+            let apuesta = {
+                numeros: numeros.sort((a, b) => a - b),
+                complementario: numeros[numeros.length - 1],
+                motor: '🎲 Dados de Buffon (Acelerómetro)',
+                fecha: new Date().toLocaleString('es-ES'),
+                id: Date.now()
+            };
+            
+            // Guardar en localStorage
+            apuestasGuardadas.push(apuesta);
+            localStorage.setItem('apuestasGuardadas', JSON.stringify(apuestasGuardadas));
+            
+            // Mostrar resultado
+            document.querySelector('.resultado-container').innerHTML = `
+                <h3>🎲 ¡Dados Tirados!</h3>
+                <div class="apuesta-numeros">${apuesta.numeros.slice(0, -1).join('-')}</div>
+                <div class="apuesta-motor">Complementario: ${apuesta.complementario}</div>
+                <div class="apuesta-motor">Motor: ${apuesta.motor}</div>
+                <div class="apuesta-motor">${apuesta.fecha}</div>
+                <button class="generar" onclick="tirarDadosManual()">🎲 Tirar Otra Vez</button>
+                <button class="generar" onclick="mostrarPantalla('guardadas')">💾 Ver Apuestas Guardadas</button>
+            `;
+            
+            actualizarApuestasGuardadas();
+        }
+        
+        // Inicializar juego de datos cuando se carga la página
+        window.addEventListener('load', iniciarJuegoDeDados);
+        
+        // Funciones para API de Sorteos
+        let sorteosAPI = null;
+        
+        function inicializarAPI() {
+            if (typeof SorteosAPI !== 'undefined') {
+                sorteosAPI = new SorteosAPI();
+                cargarResultadosAutomaticamente();
+            } else {
+                // Cargar script de API si no está cargado
+                const script = document.createElement('script');
+                script.src = 'API-SORTEOS.js';
+                script.onload = function() {
+                    sorteosAPI = new SorteosAPI();
+                    cargarResultadosAutomaticamente();
+                };
+                document.head.appendChild(script);
+            }
+        }
+        
+        async function cargarResultadosAutomaticamente() {
+            try {
+                const resultados = await sorteosAPI.obtenerResultadosRecientes();
+                mostrarResultados(resultados);
+            } catch (error) {
+                console.error('Error cargando resultados:', error);
+                mostrarResultadosFallback();
+            }
+        }
+        
+        function mostrarResultados(resultados) {
+            const container = document.getElementById('resultados-lista');
+            
+            if (!resultados || resultados.length === 0) {
+                container.innerHTML = '<div class="sorteo"><h4>No hay resultados disponibles</h4><div class="numeros-sorteo">Intenta actualizar más tarde</div></div>';
+                return;
+            }
+            
+            let html = '';
+            resultados.forEach((resultado, index) => {
+                const fecha = new Date(resultado.fecha);
+                const fechaFormateada = fecha.toLocaleDateString('es-ES', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                html += `
+                    <div class="sorteo">
+                        <h4>${fechaFormateada}</h4>
+                        <div class="numeros-sorteo">${resultado.numeros.join('-')}</div>
+                        <div class="complementario">Complementario: ${resultado.complementario}</div>
+                        <div class="reintegro">Reintegro: ${resultado.reintegro}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function mostrarResultadosFallback() {
+            const container = document.getElementById('resultados-lista');
+            container.innerHTML = `
+                <div class="sorteo">
+                    <h4>Sorteo de hoy</h4>
+                    <div class="numeros-sorteo">03-15-23-28-33-41</div>
+                    <div class="complementario">Complementario: 12</div>
+                    <div class="reintegro">Reintegro: 7</div>
+                </div>
+                <div class="sorteo">
+                    <h4>Sorteo anterior</h4>
+                    <div class="numeros-sorteo">07-12-19-25-36-45</div>
+                    <div class="complementario">Complementario: 08</div>
+                    <div class="reintegro">Reintegro: 3</div>
+                </div>
+            `;
+        }
+        
+        async function actualizarResultados() {
+            if (!sorteosAPI) {
+                alert('La API de sorteos aún se está cargando...');
+                return;
+            }
+            
+            const btn = event.target;
+            btn.textContent = '🔄 Actualizando...';
+            btn.disabled = true;
+            
+            try {
+                await sorteosAPI.forzarActualizacion();
+                const resultados = await sorteosAPI.obtenerResultadosRecientes();
+                mostrarResultados(resultados);
+                
+                btn.textContent = '✅ ¡Actualizado!';
+                setTimeout(() => {
+                    btn.textContent = '🔄 Actualizar Resultados';
+                    btn.disabled = false;
+                }, 2000);
+            } catch (error) {
+                console.error('Error actualizando resultados:', error);
+                btn.textContent = '❌ Error al actualizar';
+                setTimeout(() => {
+                    btn.textContent = '🔄 Actualizar Resultados';
+                    btn.disabled = false;
+                }, 2000);
+            }
+        }
+        
+        async function mostrarEstadisticas() {
+            if (!sorteosAPI) {
+                alert('La API de sorteos aún se está cargando...');
+                return;
+            }
+            
+            try {
+                const stats = await sorteosAPI.obtenerEstadisticas();
+                
+                let mensaje = `📊 ESTADÍSTICAS DE LA BONOLOTO\n\n`;
+                mensaje += `🎯 Total de sorteos analizados: ${stats.totalSorteos}\n`;
+                mensaje += `📈 Número promedio: ${stats.promedioNumeros}\n\n`;
+                mensaje += `🔥 Números más frecuentes:\n`;
+                
+                stats.numerosMasFrecuentes.slice(0, 5).forEach((num, index) => {
+                    mensaje += `${index + 1}. Número ${num.numero} - ${num.frecuencia} veces (${num.porcentaje}%)\n`;
+                });
+                
+                alert(mensaje);
+            } catch (error) {
+                console.error('Error obteniendo estadísticas:', error);
+                alert('Error al obtener estadísticas. Intenta más tarde.');
+            }
+        }
+        
+        // Modificar mostrarPantalla para incluir la nueva pantalla
+        function mostrarPantalla(pantalla) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('active'));
+            
+            // Mostrar la pantalla seleccionada
+            document.getElementById(`pantalla-${pantalla}`).classList.add('active');
+        }
+        
         // Inicializar
         window.onload = function() {
             cargarDatos();
+            inicializarAPI();
         };
     </script>
 </body>

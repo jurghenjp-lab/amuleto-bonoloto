@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💬 Comentarios - Amuleto Bonoloto</title>
+    <meta name="description" content="Comentarios y feedback de la comunidad Amuleto Bonoloto">
+    <meta name="theme-color" content="#0B0E14">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0B0E14 0%, #1a1f2e 100%);
+            color: #D4AF37;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #D4AF37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .comment-form {
+            background: #1a1f2e;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid #D4AF37;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .form-group {
+            margin: 20px 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #D4AF37;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: #2a2f3e;
+            color: white;
+            border: 2px solid #3a3f4e;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #D4AF37;
+            background: #3a3f4e;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .rating-group {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .star {
+            font-size: 2rem;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .star:hover,
+        .star.active {
+            color: #D4AF37;
+        }
+        
+        .submit-btn {
+            background: #D4AF37;
+            color: #0B0E14;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            background: #8B6914;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        .submit-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .comments-list {
+            margin: 30px 0;
+        }
+        
+        .comment {
+            background: #1a1f2e;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #D4AF37;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .comment-author {
+            color: #D4AF37;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .comment-rating {
+            color: #D4AF37;
+        }
+        
+        .comment-date {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .comment-text {
+            color: #fff;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .no-comments {
+            text-align: center;
+            color: #888;
+            padding: 40px;
+            font-size: 1.1rem;
+        }
+        
+        .back-btn {
+            background: transparent;
+            border: 2px solid #D4AF37;
+            color: #D4AF37;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 20px auto;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: #1a1f2e;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #D4AF37;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            color: #D4AF37;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💬 Comentarios de la Comunidad</h1>
+            <p>Comparte tu experiencia y ayuda a mejorar Amuleto Bonoloto</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalComments">0</div>
+                <div class="stat-label">Comentarios Totales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgRating">0.0</div>
+                <div class="stat-label">Valoración Media</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">Usuarios Activos</div>
+            </div>
+        </div>
+        
+        <div class="comment-form">
+            <h2>📝 Deja tu Comentario</h2>
+            
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" placeholder="Tu nombre o apodo" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email (opcional):</label>
+                <input type="email" id="email" placeholder="tu@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label>Valoración:</label>
+                <div class="rating-group">
+                    <span class="star" data-rating="1">⭐</span>
+                    <span class="star" data-rating="2">⭐</span>
+                    <span class="star" data-rating="3">⭐</span>
+                    <span class="star" data-rating="4">⭐</span>
+                    <span class="star" data-rating="5">⭐</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="comment">Tu comentario:</label>
+                <textarea id="comment" placeholder="Cuéntanos tu experiencia con Amuleto Bonoloto..." required></textarea>
+            </div>
+            
+            <button class="submit-btn" onclick="submitComment()" id="submitBtn">
+                📝 Publicar Comentario
+            </button>
+        </div>
+        
+        <div class="comments-list" id="commentsList">
+            <!-- Los comentarios se cargarán aquí -->
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="web-version.html" class="back-btn">
+                ← Volver a la App
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let selectedRating = 0;
+        let comments = [];
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComments();
+            setupRatingStars();
+            updateStats();
+        });
+        
+        function setupRatingStars() {
+            const stars = document.querySelectorAll('.star');
+            
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    selectedRating = parseInt(this.dataset.rating);
+                    updateStars();
+                });
+                
+                star.addEventListener('mouseenter', function() {
+                    const hoverRating = parseInt(this.dataset.rating);
+                    highlightStars(hoverRating);
+                });
+            });
+            
+            document.querySelector('.rating-group').addEventListener('mouseleave', function() {
+                updateStars();
+            });
+        }
+        
+        function updateStars() {
+            highlightStars(selectedRating);
+        }
+        
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        function submitComment() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const comment = document.getElementById('comment').value.trim();
+            
+            if (!name || !comment) {
+                alert('Por favor, completa el nombre y el comentario');
+                return;
+            }
+            
+            if (selectedRating === 0) {
+                alert('Por favor, selecciona una valoración');
+                return;
+            }
+            
+            const newComment = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                rating: selectedRating,
+                comment: comment,
+                date: new Date().toISOString(),
+                approved: true // En producción, esto requeriría moderación
+            };
+            
+            comments.unshift(newComment);
+            saveComments();
+            displayComments();
+            updateStats();
+            
+            // Limpiar formulario
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('comment').value = '';
+            selectedRating = 0;
+            updateStars();
+            
+            alert('¡Gracias por tu comentario! 🎉');
+        }
+        
+        function loadComments() {
+            const saved = localStorage.getItem('amuletoComments');
+            if (saved) {
+                comments = JSON.parse(saved);
+            } else {
+                // Comentarios de ejemplo
+                comments = [
+                    {
+                        id: 1,
+                        name: "María G.",
+                        rating: 5,
+                        comment: "¡Increíble app! Los motores de predicción son geniales y el diseño es espectacular. 🎱",
+                        date: "2026-04-01T10:00:00Z",
+                        approved: true
+                    },
+                    {
+                        id: 2,
+                        name: "Juan P.",
+                        rating: 4,
+                        comment: "Me encanta el juego de dados con acelerómetro. ¡Muy original! 🎲",
+                        date: "2026-04-02T15:30:00Z",
+                        approved: true
+                    },
+                    {
+                        id: 3,
+                        name: "Ana R.",
+                        rating: 5,
+                        comment: "El experimento de Buffon es fascinante. Nunca había visto algo así en una app de lotería. 📏",
+                        date: "2026-04-03T09:15:00Z",
+                        approved: true
+                    }
+                ];
+            }
+            displayComments();
+        }
+        
+        function saveComments() {
+            localStorage.setItem('amuletoComments', JSON.stringify(comments));
+        }
+        
+        function displayComments() {
+            const container = document.getElementById('commentsList');
+            
+            if (comments.length === 0) {
+                container.innerHTML = '<div class="no-comments">No hay comentarios aún. ¡Sé el primero en compartir tu experiencia!</div>';
+                return;
+            }
+            
+            let html = '';
+            comments.forEach(comment => {
+                if (comment.approved) {
+                    const date = new Date(comment.date);
+                    const formattedDate = date.toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const stars = '⭐'.repeat(comment.rating);
+                    
+                    html += `
+                        <div class="comment">
+                            <div class="comment-header">
+                                <div class="comment-author">${comment.name}</div>
+                                <div class="comment-rating">${stars}</div>
+                            </div>
+                            <div class="comment-date">${formattedDate}</div>
+                            <div class="comment-text">${comment.comment}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function updateStats() {
+            const totalComments = comments.filter(c => c.approved).length;
+            const avgRating = totalComments > 0 
+                ? (comments.filter(c => c.approved).reduce((sum, c) => sum + c.rating, 0) / totalComments)
+                : 0;
+            const totalUsers = new Set(comments.filter(c => c.approved).map(c => c.name)).size;
+            
+            document.getElementById('totalComments').textContent = totalComments;
+            document.getElementById('avgRating').textContent = avgRating.toFixed(1);
+            document.getElementById('totalUsers').textContent = totalUsers;
+        }
+    </script>
+</body>
+</html>
