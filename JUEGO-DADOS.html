@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎲 Juego de Dados con Acelerómetro - Amuleto Bonoloto</title>
+    <meta name="description" content="Juego de dados con agujas de Buffon usando acelerómetro del móvil">
+    <meta name="theme-color" content="#0B0E14">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0B0E14 0%, #1a1f2e 100%);
+            color: #D4AF37;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #D4AF37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .juego-container {
+            background: #1a1f2e;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid #D4AF37;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dados-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .dado {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            background: #D4AF37;
+            border-radius: 15px;
+            line-height: 80px;
+            font-size: 40px;
+            margin: 0 20px;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .agujas-container {
+            position: relative;
+            height: 200px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        
+        .aguja {
+            position: absolute;
+            width: 3px;
+            height: 100px;
+            background: linear-gradient(to bottom, #D4AF37, #8B6914);
+            top: 0;
+            transform-origin: center bottom;
+            transition: transform 2s ease-out;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        .aguja1 { left: 25%; }
+        .aguja2 { left: 50%; }
+        .aguja3 { left: 75%; }
+        
+        .resultado-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+        }
+        
+        .resultado-container h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+        }
+        
+        .apuesta-generada {
+            background: #2a2f3e;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #D4AF37;
+        }
+        
+        .numeros {
+            font-size: 1.5rem;
+            color: #D4AF37;
+            margin: 10px 0;
+        }
+        
+        .btn {
+            background: #D4AF37;
+            color: #0B0E14;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #8B6914;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #D4AF37;
+            color: #D4AF37;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .info {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin: 20px 0;
+        }
+        
+        .no-soporte {
+            text-align: center;
+            padding: 40px;
+            color: #ff6b6b;
+        }
+        
+        .icono {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .dado {
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+                margin: 0 10px;
+            }
+            
+            .aguja {
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎲 Juego de Dados con Acelerómetro</h1>
+            <p>📏 Agita tu móvil para lanzar los dados</p>
+            <p>🎯 Las agujas caerán según el resultado</p>
+        </div>
+        
+        <div id="juego-container" class="juego-container">
+            <!-- El contenido se generará dinámicamente -->
+        </div>
+        
+        <div class="info">
+            <p>💡 <strong>Consejo:</strong> Agita el móvil con fuerza para lanzar los dados</p>
+            <p>📱 <strong>Compatible:</strong> iOS, Android y navegadores modernos</p>
+            <p>🔒 <strong>Seguro:</strong> Todo funciona localmente en tu dispositivo</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let dadosLanzados = false;
+        let ultimaTirada = 0;
+
+        // Inicializar el juego
+        function iniciarJuego() {
+            if (!window.DeviceMotionEvent) {
+                mostrarNoSoporte();
+                return;
+            }
+            
+            mostrarJuego();
+            activarAcelerometro();
+        }
+
+        function mostrarJuego() {
+            document.getElementById('juego-container').innerHTML = `
+                <div class="dados-container">
+                    <div id="dado1" class="dado">🎲</div>
+                    <div id="dado2" class="dado">🎲</div>
+                </div>
+                
+                <div class="agujas-container">
+                    <div id="aguja1" class="aguja aguja1"></div>
+                    <div id="aguja2" class="aguja aguja2"></div>
+                    <div id="aguja3" class="aguja aguja3"></div>
+                </div>
+                
+                <div class="resultado-container">
+                    <h3>📱 Agita el móvil para tirar los dados</h3>
+                    <p>📏 Las agujas caerán según el resultado</p>
+                    <p>🎯 ¡Generará tus números de la Bonoloto!</p>
+                    <button class="btn btn-secondary" onclick="tirarDadosManual()">
+                        🎲 Tirar Manualmente
+                    </button>
+                </div>
+            `;
+        }
+
+        function mostrarNoSoporte() {
+            document.getElementById('juego-container').innerHTML = `
+                <div class="no-soporte">
+                    <div class="icono">📱</div>
+                    <h3>Tu navegador no soporta el acelerómetro</h3>
+                    <p>Prueba en un móvil o tablet con navegador moderno</p>
+                    <button class="btn btn-secondary" onclick="tirarDadosManual()">
+                        🎲 Tirar Dados Manualmente
+                    </button>
+                </div>
+            `;
+        }
+
+        function activarAcelerometro() {
+            window.addEventListener('devicemotion', function(event) {
+                if (dadosLanzados) return; // Evitar múltiples tiradas
+                
+                let acceleration = event.accelerationIncludingGravity;
+                let x = acceleration.x;
+                let y = acceleration.y;
+                let z = acceleration.z;
+                
+                // Calcular magnitud del movimiento
+                let magnitud = Math.sqrt(x*x + y*y + z*z);
+                
+                // Detectar "agitado" (ajustar umbral según necesidad)
+                if (magnitud > 20) {
+                    console.log('¡Agitado! Magnitud:', magnitud);
+                    tirarDados();
+                }
+            });
+        }
+
+        function tirarDados() {
+            if (dadosLanzados) return;
+            
+            dadosLanzados = true;
+            ultimaTirada = Date.now();
+            
+            // Tirar dados
+            let dado1 = Math.floor(Math.random() * 6) + 1;
+            let dado2 = Math.floor(Math.random() * 6) + 1;
+            
+            // Animar dados
+            document.getElementById('dado1').textContent = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][dado1 - 1];
+            document.getElementById('dado2').textContent = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][dado2 - 1];
+            
+            // Animar agujas cayendo
+            let angulo1 = Math.random() * 360;
+            let angulo2 = Math.random() * 360;
+            let angulo3 = Math.random() * 360;
+            
+            document.getElementById('aguja1').style.transform = `rotate(${angulo1}deg)`;
+            document.getElementById('aguja2').style.transform = `rotate(${angulo2}deg)`;
+            document.getElementById('aguja3').style.transform = `rotate(${angulo3}deg)`;
+            
+            // Generar números de Bonoloto basados en los dados
+            setTimeout(() => {
+                let numeros = generarNumerosDesdeDados(dado1, dado2);
+                mostrarResultado(numeros);
+                dadosLanzados = false;
+            }, 2000);
+        }
+
+        function tirarDadosManual() {
+            tirarDados();
+        }
+
+        function generarNumerosDesdeDados(dado1, dado2) {
+            // Convertir dados a números de Bonoloto (método Buffon mejorado)
+            let base = (dado1 + dado2) * 3;
+            let numeros = [];
+            
+            for (let i = 0; i < 6; i++) {
+                let num = (base + i * 7 + Math.floor(Math.random() * 10)) % 49 + 1;
+                if (num === 0) num = 49;
+                if (!numeros.includes(num)) {
+                    numeros.push(num);
+                }
+            }
+            
+            // Complementario
+            let complementario = Math.floor(Math.random() * 9) + 1;
+            
+            return [...numeros, complementario];
+        }
+
+        function mostrarResultado(numeros) {
+            let apuesta = {
+                numeros: numeros.sort((a, b) => a - b),
+                complementario: numeros[numeros.length - 1],
+                motor: '🎲 Dados de Buffon (Acelerómetro)',
+                fecha: new Date().toLocaleString('es-ES'),
+                id: Date.now()
+            };
+            
+            // Guardar en localStorage
+            let apuestas = JSON.parse(localStorage.getItem('apuestasGuardadas') || '[]');
+            apuestas.push(apuesta);
+            localStorage.setItem('apuestasGuardadas', JSON.stringify(apuestas));
+            
+            // Mostrar resultado
+            document.getElementById('juego-container').innerHTML = `
+                <div class="apuesta-generada">
+                    <h3>🎲 ¡Dados Tirados!</h3>
+                    <div class="numeros">
+                        <strong>Números:</strong> ${apuesta.numeros.slice(0, -1).join(', ')}
+                    </div>
+                    <div class="numeros">
+                        <strong>Complementario:</strong> ${apuesta.complementario}
+                    </div>
+                    <div class="numeros">
+                        <strong>Motor:</strong> ${apuesta.motor}
+                    </div>
+                    <div class="numeros">
+                        <strong>Fecha:</strong> ${apuesta.fecha}
+                    </div>
+                    <button class="btn" onclick="reiniciarJuego()">
+                        🎲 Tirar Otra Vez
+                    </button>
+                    <button class="btn btn-secondary" onclick="verApuestasGuardadas()">
+                        💾 Ver Apuestas Guardadas
+                    </button>
+                </div>
+            `;
+        }
+
+        function reiniciarJuego() {
+            dadosLanzados = false;
+            mostrarJuego();
+        }
+
+        function verApuestasGuardadas() {
+            window.location.href = 'web-version.html#guardadas';
+        }
+
+        // Iniciar el juego cuando se carga la página
+        window.addEventListener('load', iniciarJuego);
+    </script>
+</body>
+</html>

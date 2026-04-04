@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📏 Experimento de Buffon - Amuleto Bonoloto</title>
+    <meta name="description" content="Experimento completo de Buffon con muchas agujas y líneas">
+    <meta name="theme-color" content="#0B0E14">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0B0E14 0%, #1a1f2e 100%);
+            color: #D4AF37;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #D4AF37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #888;
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+        
+        .experimento-container {
+            background: #1a1f2e;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid #D4AF37;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        .superficie-buffon {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .lineas-paralelas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .linea-paralela {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: rgba(212, 175, 55, 0.3);
+            left: 0;
+            top: 0;
+        }
+        
+        .aguja {
+            position: absolute;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, #D4AF37, #8B6914);
+            top: 20px;
+            transform-origin: center bottom;
+            transition: all 2s ease-out;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            z-index: 10;
+        }
+        
+        .punto-caida {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #D4AF37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #0B0E14;
+            bottom: 10px;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+        
+        .resultado-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+        }
+        
+        .resultado-container h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+        }
+        
+        .apuesta-generada {
+            background: #2a2f3e;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #D4AF37;
+        }
+        
+        .numeros {
+            font-size: 1.5rem;
+            color: #D4AF37;
+            margin: 10px 0;
+        }
+        
+        .estadisticas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        .estadistica-item {
+            background: rgba(212, 175, 55, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .btn {
+            background: #D4AF37;
+            color: #0B0E14;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #8B6914;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #D4AF37;
+            color: #D4AF37;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .info {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin: 20px 0;
+        }
+        
+        .no-soporte {
+            text-align: center;
+            padding: 40px;
+            color: #ff6b6b;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .aguja {
+                height: 40px;
+            }
+            
+            .experimento-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📏 Experimento Masivo de Buffon</h1>
+            <p>🎯 Agita el móvil para lanzar agujas</p>
+            <p>📊 20 líneas paralelas y 50 agujas iniciales</p>
+            <p>✨ Magia matemática de Georges-Louis Leclerc (1777)</p>
+        </div>
+        
+        <div id="experimento-container" class="experimento-container">
+            <!-- El contenido se generará dinámicamente -->
+        </div>
+        
+        <div class="estadisticas" id="estadisticas">
+            <div class="estadistica-item">
+                <h4>📏 Agujas Lanzadas</h4>
+                <div id="agujas-lanzadas">0</div>
+            </div>
+            <div class="estadistica-item">
+                <h4>🎯 Números Generados</h4>
+                <div id="numeros-generados">0</div>
+            </div>
+            <div class="estadistica-item">
+                <h4>📊 Probabilidad de π</h4>
+                <div id="probabilidad-pi">0.0000</div>
+            </div>
+        </div>
+        
+        <div class="resultado-container" id="resultado-container">
+            <h3>📏 Experimento Masivo de Buffon</h3>
+            <p>🎯 Agita el móvil para lanzar agujas</p>
+            <p>✨ Magia matemática de Georges-Louis Leclerc (1777)</p>
+            <button class="btn btn-secondary" onclick="lanzamientoMasivo()">
+                📏 Lanzamiento Masivo (20-50 agujas)
+            </button>
+            <button class="btn btn-secondary" onclick="lanzamientoControlado()">
+                📏 Lanzamiento Controlado (3-15 agujas)
+            </button>
+            <button class="btn btn-secondary" onclick="lanzamientoExperimental()">
+                🧪 Lanzamiento Experimental (50-100 agujas)
+            </button>
+        </div>
+        
+        <div class="info">
+            <p>💡 <strong>Consejo:</strong> Agita el móvil con fuerza para lanzar las agujas</p>
+            <p>📏 <strong>Experimento original:</strong> Georges-Louis Leclerc, Comte de Buffon (1777)</p>
+            <p>📊 <strong>Principio:</strong> Calcular π lanzando agujas sobre líneas paralelas</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let agujasLanzadas = [];
+        let numerosGenerados = [];
+        let totalAgujas = 0;
+        let agujasCruzaronLineas = 0;
+        
+        // Configuración del experimento masivo de Buffon
+        const NUMERO_LINEAS = 20; // Más líneas para mayor precisión
+        const ESPACIO_LINEAS = 40; // Más espacio entre líneas
+        const NUMERO_AGUJAS_INICIALES = 50; // ¡Muchas agujas como Buffon!
+        const PROBABILIDAD_CRUCE = ESPACIO_LINEAS / (2 * ANCHO_AGUJA);
+
+        // Inicializar el experimento
+        function iniciarExperimento() {
+            if (!window.DeviceMotionEvent) {
+                mostrarNoSoporte();
+                return;
+            }
+            
+            mostrarExperimento();
+            activarAcelerometro();
+        }
+
+        function mostrarExperimento() {
+            let container = document.getElementById('experimento-container');
+            container.innerHTML = `
+                <div class="superficie-buffon">
+                    ${generarLineasParalelas()}
+                    ${generarAgujasIniciales()}
+                </div>
+            `;
+        }
+
+        function generarLineasParalelas() {
+            let lineasHTML = '';
+            for (let i = 0; i < NUMERO_LINEAS; i++) {
+                let posicion = i * ESPACIO_LINEAS;
+                lineasHTML += `<div class="linea-paralela" style="left: ${posicion}px;"></div>`;
+            }
+            return lineasHTML;
+        }
+
+        function generarAgujasIniciales() {
+            let agujasHTML = '';
+            for (let i = 0; i < NUMERO_AGUJAS_INICIALES; i++) {
+                let x = Math.random() * 100;
+                let y = 20 + Math.random() * 60;
+                let rotacion = Math.random() * 360;
+                agujasHTML += `<div id="aguja-${i}" class="aguja" style="left: ${x}%; top: ${y}px; transform: rotate(${rotacion}deg);"></div>`;
+            }
+            return agujasHTML;
+        }
+
+        function mostrarNoSoporte() {
+            document.getElementById('experimento-container').innerHTML = `
+                <div class="no-soporte">
+                    <h3>📱 Tu navegador no soporta el acelerómetro</h3>
+                    <p>Prueba en un móvil o tablet con navegador moderno</p>
+                    <button class="btn btn-secondary" onclick="lanzarAgujasManual()">
+                        📏 Lanzar Agujas Manualmente
+                    </button>
+                </div>
+            `;
+        }
+
+        function activarAcelerometro() {
+            window.addEventListener('devicemotion', function(event) {
+                let acceleration = event.accelerationIncludingGravity;
+                let x = acceleration.x;
+                let y = acceleration.y;
+                let z = acceleration.z;
+                
+                // Calcular magnitud del movimiento
+                let magnitud = Math.sqrt(x*x + y*y + z*z);
+                
+                // Detectar "agitado" (ajustar umbral según necesidad)
+                if (magnitud > 25) {
+                    console.log('¡Agitado! Magnitud:', magnitud);
+                    lanzarNuevasAgujas();
+                }
+            });
+        }
+
+        function lanzarNuevasAgujas() {
+            // Lanzar 5-10 agujas nuevas
+            let numNuevasAgujas = Math.floor(Math.random() * 6) + 5;
+            
+            for (let i = 0; i < numNuevasAgujas; i++) {
+                let x = Math.random() * 100;
+                let y = 20 + Math.random() * 60;
+                let rotacion = Math.random() * 360;
+                
+                // Animar aguja cayendo
+                setTimeout(() => {
+                    let aguja = document.getElementById(`aguja-${i}`);
+                    if (aguja) {
+                        aguja.style.transition = 'all 1.5s ease-in';
+                        aguja.style.transform = `rotate(${rotacion + 90}deg) translateY(${60 - y}px)`;
+                        
+                        // Verificar si cruza alguna línea
+                        setTimeout(() => {
+                            verificarCruceLineas(i, x, y + 60);
+                        }, 1500);
+                    }
+                }, i * 100);
+            }
+            
+            totalAgujas += numNuevasAgujas;
+            actualizarEstadisticas();
+        }
+
+        function lanzarAgujasManual() {
+            lanzarNuevasAgujas();
+        }
+
+        function lanzamientoMasivo() {
+            // Lanzamiento masivo como Buffon - 20-50 agujas
+            let numNuevasAgujas = Math.floor(Math.random() * 30) + 20; // 20-50 agujas
+            
+            for (let i = 0; i < numNuevasAgujas; i++) {
+                setTimeout(() => {
+                    let x = Math.random() * 100;
+                    let y = 20 + Math.random() * 60;
+                    let rotacion = Math.random() * 360;
+                    
+                    let aguja = document.getElementById(`aguja-${i}`);
+                    if (aguja) {
+                        aguja.style.transition = 'all 0.3s ease-in';
+                        aguja.style.transform = `rotate(${rotacion + 90}deg) translateY(${60 - y}px)`;
+                        
+                        // Verificar si cruza alguna línea
+                        setTimeout(() => {
+                            verificarCruceLineas(i, x, y + 60);
+                        }, 100); // Muy rápido para modo masivo
+                    }
+                }, i * 10); // Agujas cada 10ms - ¡tormenta de agujas!
+            }
+            
+            totalAgujas += numNuevasAgujas;
+            actualizarEstadisticas();
+        }
+
+        function lanzamientoControlado() {
+            // Lanzamiento controlado - 3-15 agujas
+            let numNuevasAgujas = Math.floor(Math.random() * 12) + 3; // 3-15 agujas
+            
+            for (let i = 0; i < numNuevasAgujas; i++) {
+                setTimeout(() => {
+                    let x = Math.random() * 100;
+                    let y = 20 + Math.random() * 60;
+                    let rotacion = Math.random() * 360;
+                    
+                    let aguja = document.getElementById(`aguja-${i}`);
+                    if (aguja) {
+                        aguja.style.transition = 'all 0.5s ease-in';
+                        aguja.style.transform = `rotate(${rotacion + 90}deg) translateY(${60 - y}px)`;
+                        
+                        // Verificar si cruza alguna línea
+                        setTimeout(() => {
+                            verificarCruceLineas(i, x, y + 60);
+                        }, 300); // Velocidad controlada
+                    }
+                }, i * 100); // Agujas cada 100ms - controlado
+            }
+            
+            totalAgujas += numNuevasAgujas;
+            actualizarEstadisticas();
+        }
+
+        function lanzamientoExperimental() {
+            // Lanzamiento experimental - 50-100 agujas
+            let numNuevasAgujas = Math.floor(Math.random() * 50) + 50; // 50-100 agujas
+            
+            for (let i = 0; i < numNuevasAgujas; i++) {
+                setTimeout(() => {
+                    let x = Math.random() * 100;
+                    let y = 20 + Math.random() * 60;
+                    let rotacion = Math.random() * 360;
+                    
+                    let aguja = document.getElementById(`aguja-${i}`);
+                    if (aguja) {
+                        aguja.style.transition = 'all 0.2s ease-in';
+                        aguja.style.transform = `rotate(${rotacion + 90}deg) translateY(${60 - y}px)`;
+                        
+                        // Verificar si cruza alguna línea
+                        setTimeout(() => {
+                            verificarCruceLineas(i, x, y + 60);
+                        }, 50); // Ultra rápido para modo experimental
+                    }
+                }, i * 5); // Agujas cada 5ms - ¡velocidad extrema!
+            }
+            
+            totalAgujas += numNuevasAgujas;
+            actualizarEstadisticas();
+        }
+
+        function lanzarAgujasLento() {
+            // Lanzar pocas agujas lentamente
+            let numNuevasAgujas = Math.floor(Math.random() * 5) + 3; // 3-8 agujas
+            
+            for (let i = 0; i < numNuevasAgujas; i++) {
+                setTimeout(() => {
+                    let x = Math.random() * 100;
+                    let y = 20 + Math.random() * 60;
+                    let rotacion = Math.random() * 360;
+                    
+                    let aguja = document.getElementById(`aguja-${i}`);
+                    if (aguja) {
+                        aguja.style.transition = 'all 2s ease-in';
+                        aguja.style.transform = `rotate(${rotacion + 90}deg) translateY(${60 - y}px)`;
+                        
+                        // Verificar si cruza alguna línea
+                        setTimeout(() => {
+                            verificarCruceLineas(i, x, y + 60);
+                        }, 1500);
+                    }
+                }, i * 500); // Agujas cada 500ms
+            }
+            
+            totalAgujas += numNuevasAgujas;
+            actualizarEstadisticas();
+        }
+
+        function verificarCruceLineas(indiceAguja, x, y) {
+            let aguja = document.getElementById(`aguja-${indiceAguja}`);
+            if (!aguja) return;
+            
+            // Verificar cada línea paralela
+            for (let i = 0; i < NUMERO_LINEAS; i++) {
+                let lineaX = i * ESPACIO_LINEAS;
+                
+                // La aguja cruza la línea si está cerca
+                if (Math.abs(x - lineaX) < 10) {
+                    agujasCruzaronLineas++;
+                    
+                    // Marcar la aguja que cruzó
+                    aguja.style.background = 'linear-gradient(to bottom, #ff6b6b, #ff4444)';
+                    aguja.style.boxShadow = '0 0 20px rgba(255, 107, 107, 0.8)';
+                    
+                    // Generar número
+                    let numero = generarNumeroDesdeAguja(indiceAguja, i);
+                    numerosGenerados.push(numero);
+                    
+                    // Crear punto de caída
+                    crearPuntoCaida(x, y, numero);
+                    
+                    // Actualizar estadísticas
+                    actualizarEstadisticas();
+                    
+                    break;
+                }
+            }
+        }
+
+        function generarNumeroDesdeAguja(indiceAguja, indiceLinea) {
+            // Generar número basado en la aguja y línea que cruzó
+            let base = (indiceAguja + indiceLinea) * 7;
+            let numero = (base + Math.floor(Math.random() * 10)) % 49 + 1;
+            if (numero === 0) numero = 49;
+            return numero;
+        }
+
+        function crearPuntoCaida(x, y, numero) {
+            let punto = document.createElement('div');
+            punto.className = 'punto-caida';
+            punto.textContent = numero;
+            punto.style.left = x + '%';
+            punto.style.bottom = '10px';
+            punto.id = `punto-${Date.now()}`;
+            
+            document.getElementById('experimento-container').appendChild(punto);
+            
+            // Animar aparición del número
+            setTimeout(() => {
+                punto.style.transform = 'translateX(-50%) scale(1.2)';
+                punto.style.background = '#ff6b6b';
+            }, 100);
+            
+            setTimeout(() => {
+                punto.style.transform = 'translateX(-50%) scale(1)';
+                punto.style.background = '#D4AF37';
+            }, 600);
+        }
+
+        function actualizarEstadisticas() {
+            document.getElementById('agujas-lanzadas').textContent = totalAgujas;
+            document.getElementById('numeros-generados').textContent = numerosGenerados.length;
+            
+            // Calcular aproximación de π
+            if (agujasCruzaronLineas > 0 && totalAgujas > 0) {
+                let piAproximado = (2 * agujasCruzaronLineas) / totalAgujas;
+                document.getElementById('probabilidad-pi').textContent = piAproximado.toFixed(4);
+            }
+        }
+
+        function reiniciarExperimento() {
+            agujasLanzadas = [];
+            numerosGenerados = [];
+            totalAgujas = 0;
+            agujasCruzaronLineas = 0;
+            
+            // Limpiar puntos de caída
+            let puntos = document.querySelectorAll('.punto-caida');
+            puntos.forEach(punto => punto.remove());
+            
+            // Reiniciar agujas a posición inicial
+            let agujas = document.querySelectorAll('.aguja');
+            agujas.forEach((aguja, index) => {
+                if (index < 20) {
+                    aguja.style.background = 'linear-gradient(to bottom, #D4AF37, #8B6914)';
+                    aguja.style.boxShadow = '0 0 10px rgba(212, 175, 55, 0.3)';
+                    aguja.style.transform = `rotate(${Math.random() * 360}deg)`;
+                }
+            });
+            
+            actualizarEstadisticas();
+        }
+
+        function guardarApuestaBuffon() {
+            if (numerosGenerados.length === 0) {
+                alert('📏 Primero lanza algunas agujas para generar números');
+                return;
+            }
+            
+            let apuesta = {
+                numeros: [...numerosGenerados].slice(-6), // Últimos 6 números
+                complementario: numerosGenerados[numerosGenerados.length - 1],
+                motor: '📏 Experimento de Buffon (Muchas Agujas)',
+                fecha: new Date().toLocaleString('es-ES'),
+                id: Date.now(),
+                estadisticas: {
+                    agujasLanzadas: totalAgujas,
+                    agujasCruzaron: agujasCruzaronLineas,
+                    piAproximado: agujasCruzaronLineas > 0 ? ((2 * agujasCruzaronLineas) / totalAgujas).toFixed(4) : '0.0000'
+                }
+            };
+            
+            // Guardar en localStorage
+            let apuestas = JSON.parse(localStorage.getItem('apuestasGuardadas') || '[]');
+            apuestas.push(apuesta);
+            localStorage.setItem('apuestasGuardadas', JSON.stringify(apuestas));
+            
+            // Mostrar resultado
+            mostrarResultadoBuffon(apuesta);
+        }
+
+        function mostrarResultadoBuffon(apuesta) {
+            document.getElementById('resultado-container').innerHTML = `
+                <div class="apuesta-generada">
+                    <h3>📏 ¡Experimento Completo!</h3>
+                    <div class="numeros">
+                        <strong>Números generados:</strong> ${apuesta.numeros.join(', ')}
+                    </div>
+                    <div class="numeros">
+                        <strong>Complementario:</strong> ${apuesta.complementario}
+                    </div>
+                    <div class="numeros">
+                        <strong>Motor:</strong> ${apuesta.motor}
+                    </div>
+                    <div class="numeros">
+                        <strong>Fecha:</strong> ${apuesta.fecha}
+                    </div>
+                    <div class="numeros">
+                        <strong>Agujas lanzadas:</strong> ${apuesta.estadisticas.agujasLanzadas}
+                    </div>
+                    <div class="numeros">
+                        <strong>Agujas que cruzaron:</strong> ${apuesta.estadisticas.agujasCruzaron}
+                    </div>
+                    <div class="numeros">
+                        <strong>π aproximado:</strong> ${apuesta.estadisticas.piAproximado}
+                    </div>
+                    <button class="btn" onclick="reiniciarExperimento()">
+                        📏 Reiniciar Experimento
+                    </button>
+                    <button class="btn btn-secondary" onclick="guardarApuestaBuffon()">
+                        💾 Guardar Apuesta
+                    </button>
+                    <button class="btn btn-secondary" onclick="verApuestasGuardadas()">
+                        📊 Ver Apuestas Guardadas
+                    </button>
+                </div>
+            `;
+        }
+
+        function verApuestasGuardadas() {
+            window.location.href = 'web-version.html#guardadas';
+        }
+
+        // Iniciar el experimento cuando se carga la página
+        window.addEventListener('load', iniciarExperimento);
+    </script>
+</body>
+</html>
